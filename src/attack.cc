@@ -1,6 +1,7 @@
 #include "attack.h"
 
 #include "barrage.h"
+#include "constant.h"
 
 #include <iostream>
 #include <stdexcept>
@@ -35,6 +36,7 @@ std::vector<std::complex<float>> generate_samples(const all_args_t &args) {
   case attack_type_t::BARRAGE:
     return generate_barrage(args);
   case attack_type_t::CONSTANT:
+    return generate_constant(args);
   case attack_type_t::RANDOM:
     throw std::runtime_error("Attack type not implemented yet: " +
                              std::string(attackTypeToString(args.attack_type)));
@@ -46,9 +48,9 @@ std::vector<std::complex<float>> generate_samples(const all_args_t &args) {
 void transmission(uhd::usrp::multi_usrp::sptr usrp, const all_args_t &args) {
   switch (args.attack_type) {
   case attack_type_t::BARRAGE:
+  case attack_type_t::CONSTANT:
     transmission_continuous(usrp, args);
     return;
-  case attack_type_t::CONSTANT:
   case attack_type_t::RANDOM:
     throw std::runtime_error("Attack type not implemented yet: " +
                              std::string(attackTypeToString(args.attack_type)));

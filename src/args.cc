@@ -78,6 +78,11 @@ all_args_t parseConfig(
     args.attack_type = parseAttackType(config["attack_type"].as<std::string>());
   }
 
+  args.tone_offset_hz = 0.0f;
+  if (config["tone_offset_hz"]) {
+    args.tone_offset_hz = config["tone_offset_hz"].as<float>();
+  }
+
   // autoconfig field
   args.enable_autoconfigure = false;
   if (config["enable_autoconfigure"]) {
@@ -139,6 +144,8 @@ void overrideConfig(all_args_t &args, int argc, char *argv[]) {
       args.enable_autoconfigure = (std::string(argv[++i]) == "true");
     } else if (std::strcmp(argv[i], "--attack_type") == 0 && i + 1 < argc) {
       args.attack_type = parseAttackType(argv[++i]);
+    } else if (std::strcmp(argv[i], "--tone_offset_hz") == 0 && i + 1 < argc) {
+      args.tone_offset_hz = std::atof(argv[++i]);
     } else {
       std::cerr << "Unknown or incomplete option: " << argv[i] << std::endl;
     }

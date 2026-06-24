@@ -43,6 +43,7 @@ typedef struct all_args_s {
   rf_args_t rf;
 
   attack_type_t attack_type = attack_type_t::BARRAGE;
+  float tone_offset_hz = 0.0f;
 
   //autoconfig control
   bool enable_autoconfigure = false;
