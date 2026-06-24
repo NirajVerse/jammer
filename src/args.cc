@@ -6,6 +6,32 @@
     throw std::runtime_error("Missing required field in config: '" #key "'");  \
   }
 
+attack_type_t parseAttackType(const std::string &type) {
+  if (type == "barrage") {
+    return attack_type_t::BARRAGE;
+  }
+  if (type == "constant") {
+    return attack_type_t::CONSTANT;
+  }
+  if (type == "random") {
+    return attack_type_t::RANDOM;
+  }
+  throw std::runtime_error("Unknown attack_type: '" + type +
+                           "' (expected barrage, constant, or random)");
+}
+
+const char *attackTypeToString(attack_type_t type) {
+  switch (type) {
+  case attack_type_t::BARRAGE:
+    return "barrage";
+  case attack_type_t::CONSTANT:
+    return "constant";
+  case attack_type_t::RANDOM:
+    return "random";
+  }
+  return "unknown";
+}
+
 all_args_t parseConfig(
     const std::string &filename) { // change the filename to the real filename
 
@@ -46,7 +72,11 @@ all_args_t parseConfig(
   args.center_frequency = config["center_frequency"] ? config["center_frequency"].as<float>() : 0.0f;
   args.sampling_freq    = config["sampling_freq"]    ? config["sampling_freq"].as<float>()    : 0.0f;
   args.rf.tx_gain       = config["tx_gain"]          ? config["tx_gain"].as<float>()          : 0.0f;
-//  
+
+  args.attack_type = attack_type_t::BARRAGE;
+  if (config["attack_type"]) {
+    args.attack_type = parseAttackType(config["attack_type"].as<std::string>());
+  }
 
   // autoconfig field
   args.enable_autoconfigure = false;
@@ -107,6 +137,8 @@ void overrideConfig(all_args_t &args, int argc, char *argv[]) {
 	
     } else if (std::strcmp(argv[i], "--enable_autoconfigure") == 0 && i + 1 < argc) {
       args.enable_autoconfigure = (std::string(argv[++i]) == "true");
+    } else if (std::strcmp(argv[i], "--attack_type") == 0 && i + 1 < argc) {
+      args.attack_type = parseAttackType(argv[++i]);
     } else {
       std::cerr << "Unknown or incomplete option: " << argv[i] << std::endl;
     }

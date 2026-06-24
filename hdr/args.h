@@ -23,6 +23,11 @@ typedef struct db_args_s {
   std::string data_id = "";
 } db_args_t;
 
+enum class attack_type_t { BARRAGE, CONSTANT, RANDOM };
+
+attack_type_t parseAttackType(const std::string &type);
+const char *attackTypeToString(attack_type_t type);
+
 typedef struct all_args_s {
   float amplitude;
   float amplitude_width;
@@ -36,6 +41,8 @@ typedef struct all_args_s {
   bool write_iq;
   bool write_csv;
   rf_args_t rf;
+
+  attack_type_t attack_type = attack_type_t::BARRAGE;
 
   //autoconfig control
   bool enable_autoconfigure = false;

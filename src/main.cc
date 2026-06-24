@@ -3,7 +3,7 @@
 
 #include "autoconfig.h"
 #include "args.h"
-#include "noise.h"
+#include "attack.h"
 #include "rf.h"
 #include <cmath>
 #include <complex>
@@ -98,8 +98,10 @@ int main(int argc, char *argv[]) {
     return EXIT_FAILURE;
   }
 
-  // Generate the complex sine wave
-  auto samples = generateComplexSineWave(args);
+  // Generate attack waveform samples
+  std::cout << "Attack type: " << attackTypeToString(args.attack_type)
+            << std::endl;
+  auto samples = generate_samples(args);
 
   // Write IQ binary file if enabled
   if (args.write_iq) {
