@@ -1,4 +1,5 @@
 #include "args.h"
+#include <stdexcept>
 #include <string>
 
 #define REQUIRE_FIELD(node, key)                                               \
@@ -83,6 +84,16 @@ all_args_t parseConfig(
     args.tone_offset_hz = config["tone_offset_hz"].as<float>();
   }
 
+  args.burst_duration_ms = 50.0f;
+  if (config["burst_duration_ms"]) {
+    args.burst_duration_ms = config["burst_duration_ms"].as<float>();
+  }
+
+  args.idle_duration_ms = 50.0f;
+  if (config["idle_duration_ms"]) {
+    args.idle_duration_ms = config["idle_duration_ms"].as<float>();
+  }
+
   // autoconfig field
   args.enable_autoconfigure = false;
   if (config["enable_autoconfigure"]) {
@@ -146,8 +157,26 @@ void overrideConfig(all_args_t &args, int argc, char *argv[]) {
       args.attack_type = parseAttackType(argv[++i]);
     } else if (std::strcmp(argv[i], "--tone_offset_hz") == 0 && i + 1 < argc) {
       args.tone_offset_hz = std::atof(argv[++i]);
+    } else if (std::strcmp(argv[i], "--burst_duration_ms") == 0 && i + 1 < argc) {
+      args.burst_duration_ms = std::atof(argv[++i]);
+    } else if (std::strcmp(argv[i], "--idle_duration_ms") == 0 && i + 1 < argc) {
+      args.idle_duration_ms = std::atof(argv[++i]);
     } else {
       std::cerr << "Unknown or incomplete option: " << argv[i] << std::endl;
     }
+  }
+}
+
+void validateAttackArgs(const all_args_t &args) {
+  if (args.attack_type != attack_type_t::RANDOM) {
+    return;
+  }
+
+  if (args.burst_duration_ms <= 0.0f) {
+    throw std::runtime_error(
+        "burst_duration_ms must be > 0 for random jamming");
+  }
+  if (args.idle_duration_ms <= 0.0f) {
+    throw std::runtime_error("idle_duration_ms must be > 0 for random jamming");
   }
 }

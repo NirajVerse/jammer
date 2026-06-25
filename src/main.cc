@@ -90,6 +90,12 @@ int main(int argc, char *argv[]) {
   // Override config with any command-line arguments provided
   overrideConfig(args, argc, argv);
 
+  try {
+    validateAttackArgs(args);
+  } catch (const std::exception &ex) {
+    fprintf(stderr, "Config error: %s\n", ex.what());
+    return EXIT_FAILURE;
+  }
 
   // Validate that RF fields were provided (either from YAML or autoconfig)
   if (args.center_frequency == 0.0f || args.sampling_freq == 0.0f || args.rf.tx_gain == 0.0f) {

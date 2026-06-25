@@ -44,6 +44,8 @@ typedef struct all_args_s {
 
   attack_type_t attack_type = attack_type_t::BARRAGE;
   float tone_offset_hz = 0.0f;
+  float burst_duration_ms = 50.0f;
+  float idle_duration_ms = 50.0f;
 
   //autoconfig control
   bool enable_autoconfigure = false;
@@ -53,5 +55,7 @@ typedef struct all_args_s {
 all_args_t parseConfig(const std::string &filename);
 
 void overrideConfig(all_args_t &args, int argc, char *argv[]);
+
+void validateAttackArgs(const all_args_t &args);
 
 #endif // !ARGS_H
