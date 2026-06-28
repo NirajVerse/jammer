@@ -6,8 +6,10 @@
 #include <complex>
 #include <vector>
 
-// Constant (spot/CW) jamming: single baseband tone at tone_offset_hz from LO
-// (USRP RF is tuned to center_frequency in main.cc).
+// Constant (partial-band noise) jamming: narrowband noise centered at
+// tone_offset_hz with width jam_bandwidth_hz. Synthesized as a sum of
+// num_tones randomly-phased tones (defeats DC cancellation, hits many
+// subcarriers, sustained degradation without saturating the RX).
 std::vector<std::complex<float>> generate_constant(const all_args_t &args);
 
 #endif

@@ -1,8 +1,14 @@
 attack_type: constant
+
+# Partial-band noise constant jammer.
+
 amplitude: 0.7
 amplitude_width: 0.05
-# Baseband offset from LO (Hz). 0 = jam at channel center; try ±1e6 if weak.
-tone_offset_hz: 0
+
+tone_offset_hz: 0          # baseband offset of the noise band center
+jam_bandwidth_hz: 5.0e6    # 5 MHz noise band → hits ~25% of the 20 MHz channel
+num_tones: 64
+
 center_frequency: 1842050000
 bandwidth: 40e6
 initial_phase: 0
@@ -13,4 +19,7 @@ output_csv_file: "output.csv"
 write_iq: false
 write_csv: true
 device_args: "type=b200"
-tx_gain: 48       # start 45–50; raise only if KPIs still look clean
+
+# Tuning ladder: start at 42, raise to 45/48 only if KPIs look like clean.
+# If you see RRC release, drop back by 2–3 dB.
+tx_gain: 42

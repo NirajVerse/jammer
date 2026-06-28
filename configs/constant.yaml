@@ -1,8 +1,22 @@
 attack_type: constant
-amplitude: 0.6
+
+# Partial-band noise jammer (NOT a single CW tone — see constant.cc for why).
+# Synthesizes narrowband Gaussian-like noise of width `jam_bandwidth_hz`
+# centered at `tone_offset_hz` (baseband offset from LO).
+
+amplitude: 0.7
 amplitude_width: 0.05
-# Baseband offset from LO in Hz (0 = channel center). Range ±10 MHz for 20 MHz NR.
+
+# Center of the noise band, relative to LO. 0 = channel center. Try ±2e6 if 0 lands on DC notch.
 tone_offset_hz: 0
+
+# Width of the noise band in Hz. 3–7 MHz hits enough PRBs for moderate BLER
+# without saturating the front-end. Smaller = more localized, larger = more PRBs hit.
+jam_bandwidth_hz: 5.0e6
+
+# Number of summed tones used to synthesize the noise. 64–128 is plenty.
+num_tones: 64
+
 center_frequency: 1842050000
 bandwidth: 40e6
 initial_phase: 0
@@ -13,5 +27,8 @@ output_csv_file: "output.csv"
 write_iq: false
 write_csv: true
 device_args: "type=b200"
-# With the baseband fix, 45–50 is usually enough; 55+ often triggers RRC release.
-tx_gain: 48
+
+# With partial-band noise the right gain is usually 40–46 (well below the
+# 55 that caused RRC release with the old CW). Start at 42 and step up only if
+# KPIs still look clean.
+tx_gain: 42

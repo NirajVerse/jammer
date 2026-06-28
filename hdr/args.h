@@ -47,6 +47,10 @@ typedef struct all_args_s {
   float burst_duration_ms = 50.0f;
   float idle_duration_ms = 50.0f;
 
+  // Constant (partial-band noise) jamming controls
+  float jam_bandwidth_hz = 5.0e6f; // width of narrowband noise around tone_offset_hz
+  int   num_tones        = 64;    // tones used to synthesize the noise comb
+
   //autoconfig control
   bool enable_autoconfigure = false;
   db_args_t db;

@@ -94,6 +94,16 @@ all_args_t parseConfig(
     args.idle_duration_ms = config["idle_duration_ms"].as<float>();
   }
 
+  args.jam_bandwidth_hz = 5.0e6f;
+  if (config["jam_bandwidth_hz"]) {
+    args.jam_bandwidth_hz = config["jam_bandwidth_hz"].as<float>();
+  }
+
+  args.num_tones = 64;
+  if (config["num_tones"]) {
+    args.num_tones = config["num_tones"].as<int>();
+  }
+
   // autoconfig field
   args.enable_autoconfigure = false;
   if (config["enable_autoconfigure"]) {
@@ -161,6 +171,10 @@ void overrideConfig(all_args_t &args, int argc, char *argv[]) {
       args.burst_duration_ms = std::atof(argv[++i]);
     } else if (std::strcmp(argv[i], "--idle_duration_ms") == 0 && i + 1 < argc) {
       args.idle_duration_ms = std::atof(argv[++i]);
+    } else if (std::strcmp(argv[i], "--jam_bandwidth_hz") == 0 && i + 1 < argc) {
+      args.jam_bandwidth_hz = std::atof(argv[++i]);
+    } else if (std::strcmp(argv[i], "--num_tones") == 0 && i + 1 < argc) {
+      args.num_tones = std::atoi(argv[++i]);
     } else {
       std::cerr << "Unknown or incomplete option: " << argv[i] << std::endl;
     }
