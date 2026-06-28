@@ -1,7 +1,8 @@
 attack_type: constant
 amplitude: 0.7
 amplitude_width: 0.05
-tone_offset_hz: 0     # 3 MHz — try 3000000 or -3000000
+# Baseband offset from LO (Hz). 0 = jam at channel center; try ±1e6 if weak.
+tone_offset_hz: 0
 center_frequency: 1842050000
 bandwidth: 40e6
 initial_phase: 0
@@ -12,4 +13,4 @@ output_csv_file: "output.csv"
 write_iq: false
 write_csv: true
 device_args: "type=b200"
-tx_gain: 42       # start here, NOT 5
+tx_gain: 48       # start 45–50; raise only if KPIs still look clean

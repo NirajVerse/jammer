@@ -11,7 +11,10 @@ std::vector<std::complex<float>> generate_constant(const all_args_t &args) {
   samples.reserve(args.num_samples);
 
   const float delta_t = 1.0f / args.sampling_freq;
-  const float tone_hz = args.center_frequency + args.tone_offset_hz;
+  // tone_offset_hz is a baseband offset from the USRP LO (center_frequency).
+  // Do not add center_frequency here — that aliases to an unpredictable tone
+  // (~1.15 MHz off LO) and makes tone_offset_hz almost ineffective.
+  const float tone_hz = args.tone_offset_hz;
   float phase = args.initial_phase;
 
   for (size_t i = 0; i < args.num_samples; ++i) {

@@ -1,7 +1,8 @@
 attack_type: constant
-amplitude: 0.7
+amplitude: 0.6
 amplitude_width: 0.05
-tone_offset_hz: 100000
+# Baseband offset from LO in Hz (0 = channel center). Range ±10 MHz for 20 MHz NR.
+tone_offset_hz: 0
 center_frequency: 1842050000
 bandwidth: 40e6
 initial_phase: 0
@@ -12,4 +13,5 @@ output_csv_file: "output.csv"
 write_iq: false
 write_csv: true
 device_args: "type=b200"
-tx_gain: 55
+# With the baseband fix, 45–50 is usually enough; 55+ often triggers RRC release.
+tx_gain: 48
