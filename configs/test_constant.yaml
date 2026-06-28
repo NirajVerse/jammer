@@ -1,8 +1,7 @@
-attack_type: random
-burst_duration_ms: 50
-idle_duration_ms: 50
+attack_type: constant
 amplitude: 0.7
 amplitude_width: 0.05
+tone_offset_hz: 0     # 3 MHz — try 3000000 or -3000000
 center_frequency: 1842050000
 bandwidth: 40e6
 initial_phase: 0
@@ -13,4 +12,4 @@ output_csv_file: "output.csv"
 write_iq: false
 write_csv: true
 device_args: "type=b200"
-tx_gain: 50
+tx_gain: 42       # start here, NOT 5
